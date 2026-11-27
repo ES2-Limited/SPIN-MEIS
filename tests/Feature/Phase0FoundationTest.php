@@ -1,5 +1,14 @@
 <?php
 
+use App\Services\IndicatorCatalogueImporter;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    app(IndicatorCatalogueImporter::class)->import();
+});
+
 test('api v1 health returns ok with correlation id', function () {
     $response = $this->getJson('/api/v1/health');
 
