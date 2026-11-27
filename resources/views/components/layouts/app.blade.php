@@ -32,11 +32,16 @@
             <div>
                 <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Indicator Categories</div>
                 <div class="space-y-0.5">
-                    <a href="{{ route('categories.rf') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('categories.rf') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Results Framework (PAD)</a>
-                    <a href="{{ route('categories.cf') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('categories.cf') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Communication Framework</a>
-                    <a href="{{ route('categories.bcc') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('categories.bcc') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Behaviour Change Comm.</a>
-                    <a href="{{ route('categories.grm') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('categories.grm') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Grievance Mechanism KPIs</a>
-                    <a href="{{ route('categories.gsi') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('categories.gsi') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Gender &amp; Social Inclusion</a>
+                    @php
+                        $navCategories = \Illuminate\Support\Facades\Schema::hasTable('indicator_categories')
+                            ? \App\Models\IndicatorCategory::where('is_active', true)->orderBy('sort_order')->get()
+                            : collect();
+                    @endphp
+                    @forelse($navCategories as $navCat)
+                        <a href="{{ url('/categories/' . $navCat->slug) }}" class="block px-2.5 py-1.5 rounded-md {{ request()->is('categories/' . $navCat->slug) ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">{{ $navCat->name }}</a>
+                    @empty
+                        <a href="{{ url('/categories/results-framework') }}" class="block px-2.5 py-1.5 rounded-md hover:bg-teal-800/60 text-teal-100">Results Framework (PAD)</a>
+                    @endforelse
                     <a href="{{ route('impact-indicators') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('impact-indicators') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Impact Indicators</a>
                 </div>
             </div>
@@ -87,7 +92,7 @@
         <a href="{{ route('dashboard') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->routeIs('dashboard') ? 'text-amber-300 font-semibold' : '' }}">
             <span>Dashboard</span>
         </a>
-        <a href="{{ route('categories.rf') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->is('categories/*') ? 'text-amber-300 font-semibold' : '' }}">
+        <a href="{{ url('/categories/results-framework') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->is('categories/*') ? 'text-amber-300 font-semibold' : '' }}">
             <span>Indicators</span>
         </a>
         <a href="{{ route('project-data.river-basin') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->is('project-data/*') ? 'text-amber-300 font-semibold' : '' }}">
