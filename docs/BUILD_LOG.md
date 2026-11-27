@@ -94,3 +94,14 @@
 - **Schema & Models:** `procurement_packages`, `awpb_activities`, and `impact_indicators` (`ProcurementPackage`, `AwpbActivity`, `ImpactIndicator`).
 - **River Basin Register:** `RiverBasinRegister` (`/project-data/river-basin`) with State, Model 1, Model 2, and Scheme views respecting `BelongsToOwner` scope.
 - **STEP Import:** `StepImportService` matching on `package_reference` and reporting mismatched references.
+
+---
+
+## Phase 7: Reports (Release 1 Gate)
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Reports Schema & Model:** `reports` table and `Report` model (`BelongsToOwner`, `Auditable`).
+- **ReportGeneratorService:** Generates quarterly, annual, and category reports with World Bank ISR Results Framework tables, automatic draft watermark when any unapproved value exists in the period, and CSV export.
+- **UI:** `ReportsManager` (`/reports`) listing generated reports and watermark status.

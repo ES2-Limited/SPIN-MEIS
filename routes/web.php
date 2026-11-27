@@ -8,6 +8,7 @@ use App\Livewire\CategoryPage;
 use App\Livewire\Dashboard;
 use App\Livewire\FileUploadManager;
 use App\Livewire\IndicatorDetail;
+use App\Livewire\ReportsManager;
 use App\Livewire\RiverBasinRegister;
 use App\Livewire\SectionPage;
 use Illuminate\Support\Facades\Route;
@@ -40,11 +41,7 @@ Route::prefix('project-data')->group(function () {
         ->name('project-data.awpb');
 });
 
-Route::get('/reports', SectionPage::class)
-    ->defaults('title', 'Reports')
-    ->defaults('group', 'Reporting')
-    ->defaults('description', 'Quarterly, annual, and category reports from approved data.')
-    ->name('reports');
+Route::get('/reports', ReportsManager::class)->name('reports');
 
 Route::prefix('admin')->group(function () {
     Route::get('/users', UsersManager::class)->name('admin.users');
