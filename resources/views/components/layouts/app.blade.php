@@ -11,20 +11,24 @@
     @livewireStyles
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col md:flex-row">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-amber-400 focus:text-slate-950 focus:font-semibold focus:shadow-lg">
+        Skip to main content
+    </a>
+
     {{-- Desktop Sidebar --}}
-    <aside class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-teal-900 text-teal-50 border-r border-teal-800">
+    <aside aria-label="Sidebar" class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-teal-900 text-teal-50 border-r border-teal-800">
         <div class="flex items-center gap-3 px-4 py-4 border-b border-teal-800">
-            <img src="/icons/icon-192.svg" alt="SPIN MEIS" class="w-8 h-8 rounded-lg">
+            <img src="/icons/icon-192.svg" alt="SPIN MEIS 2.0 logo" class="w-8 h-8 rounded-lg">
             <div>
                 <div class="font-bold text-sm tracking-wide text-white">SPIN MEIS 2.0</div>
                 <div class="text-[11px] text-amber-300 font-medium">FMWR&amp;S · Nigeria</div>
             </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-5 text-sm">
+        <nav aria-label="Primary" class="flex-1 overflow-y-auto px-3 py-4 space-y-5 text-sm">
             <div>
                 <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Overview</div>
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-2.5 py-2 rounded-md {{ request()->routeIs('dashboard') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">
+                <a href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif class="flex items-center gap-2 px-2.5 py-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ request()->routeIs('dashboard') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">
                     <span>Dashboard</span>
                 </a>
             </div>
@@ -81,24 +85,24 @@
     </header>
 
     {{-- Main Content --}}
-    <main class="flex-1 md:pl-64 pb-20 md:pb-8">
+    <main id="main-content" tabindex="-1" class="flex-1 md:pl-64 pb-20 md:pb-8 focus:outline-none">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             {{ $slot }}
         </div>
     </main>
 
     {{-- Mobile Bottom Navigation --}}
-    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-teal-900 text-teal-100 border-t border-teal-800 grid grid-cols-4 text-[11px] z-50">
-        <a href="{{ route('dashboard') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->routeIs('dashboard') ? 'text-amber-300 font-semibold' : '' }}">
+    <nav aria-label="Mobile navigation" class="md:hidden fixed bottom-0 inset-x-0 bg-teal-900 text-teal-100 border-t border-teal-800 grid grid-cols-4 text-[11px] z-50">
+        <a href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif class="flex flex-col items-center justify-center min-h-[48px] py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ request()->routeIs('dashboard') ? 'text-amber-300 font-semibold' : '' }}">
             <span>Dashboard</span>
         </a>
-        <a href="{{ url('/categories/results-framework') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->is('categories/*') ? 'text-amber-300 font-semibold' : '' }}">
+        <a href="{{ url('/categories/results-framework') }}" @if(request()->is('categories/*')) aria-current="page" @endif class="flex flex-col items-center justify-center min-h-[48px] py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ request()->is('categories/*') ? 'text-amber-300 font-semibold' : '' }}">
             <span>Indicators</span>
         </a>
-        <a href="{{ route('project-data.river-basin') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->is('project-data/*') ? 'text-amber-300 font-semibold' : '' }}">
+        <a href="{{ route('project-data.river-basin') }}" @if(request()->is('project-data/*')) aria-current="page" @endif class="flex flex-col items-center justify-center min-h-[48px] py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ request()->is('project-data/*') ? 'text-amber-300 font-semibold' : '' }}">
             <span>Project</span>
         </a>
-        <a href="{{ route('reports') }}" class="flex flex-col items-center justify-center py-2.5 {{ request()->routeIs('reports') ? 'text-amber-300 font-semibold' : '' }}">
+        <a href="{{ route('reports') }}" @if(request()->routeIs('reports')) aria-current="page" @endif class="flex flex-col items-center justify-center min-h-[48px] py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ request()->routeIs('reports') ? 'text-amber-300 font-semibold' : '' }}">
             <span>Reports</span>
         </a>
     </nav>

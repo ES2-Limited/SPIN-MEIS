@@ -27,12 +27,12 @@
     </div>
 
     {{-- Sub-group tabs --}}
-    <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
-        <button wire:click="selectSubgroup(null)" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ $activeSubgroupId === null ? 'bg-teal-700 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}">
+    <div role="tablist" aria-label="Indicator sub-groups" class="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+        <button role="tab" aria-selected="{{ $activeSubgroupId === null ? 'true' : 'false' }}" wire:click="selectSubgroup(null)" class="px-3 py-1.5 rounded-lg text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 {{ $activeSubgroupId === null ? 'bg-teal-700 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}">
             All
         </button>
         @foreach($subgroups as $sg)
-            <button wire:click="selectSubgroup({{ $sg->id }})" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ $activeSubgroupId === $sg->id ? 'bg-teal-700 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}">
+            <button role="tab" aria-selected="{{ $activeSubgroupId === $sg->id ? 'true' : 'false' }}" wire:click="selectSubgroup({{ $sg->id }})" class="px-3 py-1.5 rounded-lg text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 {{ $activeSubgroupId === $sg->id ? 'bg-teal-700 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}">
                 {{ $sg->name }}
             </button>
         @endforeach
