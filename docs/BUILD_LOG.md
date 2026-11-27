@@ -62,3 +62,14 @@
 
 ### Deferred
 - Automated email/in-app reminder escalation jobs (pending Decision D-13 on service-level days).
+
+---
+
+## Phase 4: File Upload
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Upload Schema & Model:** `upload_imports` table and `UploadImport` model (`BelongsToOwner`, `Auditable`).
+- **Spreadsheet Import Service:** `SpreadsheetImportService` (`generateTemplate`, `validateAndPreview`, `commit`) validating types, ranges, owner scope, and duplicates before committing `Draft` `IndicatorValue` records with `channel = 'upload'`.
+- **UI:** `FileUploadManager` (`/uploads`) for import history.
