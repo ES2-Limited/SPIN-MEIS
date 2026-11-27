@@ -5,6 +5,11 @@
                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/25 border border-amber-300/40 text-amber-200">◎ M&amp;E Framework</span>
                 <h1 class="text-2xl font-bold tracking-tight mt-2">Monitoring &amp; Evaluation Dashboard</h1>
                 <p class="text-xs text-amber-100/90 mt-1 max-w-2xl">Track Results Framework, Communication, Behaviour Change, GRM, and Gender indicators across all participating states and river basins.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <a href="{{ url('/categories/results-framework') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Results Framework</a>
+                    <a href="{{ route('uploads.index') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Bulk Upload</a>
+                    <a href="{{ route('reports') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Reports</a>
+                </div>
             </div>
             <div class="flex items-center gap-2">
                 <label for="dashboard-year" class="sr-only">Reporting Year</label>
