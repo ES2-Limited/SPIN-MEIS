@@ -1,8 +1,11 @@
 <?php
 
 use App\Livewire\Admin\AuditLogViewer;
+use App\Livewire\Admin\CategoriesManager;
 use App\Livewire\Admin\MasterDataManager;
 use App\Livewire\Admin\UsersManager;
+use App\Livewire\CategoryPage;
+use App\Livewire\IndicatorDetail;
 use App\Livewire\SectionPage;
 use Illuminate\Support\Facades\Route;
 
@@ -12,37 +15,8 @@ Route::get('/', SectionPage::class)
     ->defaults('description', 'Category scorecard and items needing attention.')
     ->name('dashboard');
 
-Route::prefix('categories')->group(function () {
-    Route::get('/results-framework', SectionPage::class)
-        ->defaults('title', 'Results Framework (PAD)')
-        ->defaults('group', 'Indicator Categories')
-        ->defaults('description', '24 PDO and Intermediate Result lines reported to the World Bank.')
-        ->name('categories.rf');
-
-    Route::get('/communication-framework', SectionPage::class)
-        ->defaults('title', 'Communication Framework')
-        ->defaults('group', 'Indicator Categories')
-        ->defaults('description', '11 indicators covering awareness, engagement, media, and WUA communication.')
-        ->name('categories.cf');
-
-    Route::get('/behaviour-change-communication', SectionPage::class)
-        ->defaults('title', 'Behaviour Change Communication')
-        ->defaults('group', 'Indicator Categories')
-        ->defaults('description', '26 indicators covering knowledge, attitudes, practice adoption, and mediation.')
-        ->name('categories.bcc');
-
-    Route::get('/grievance-mechanism-kpis', SectionPage::class)
-        ->defaults('title', 'Grievance Mechanism KPIs')
-        ->defaults('group', 'Indicator Categories')
-        ->defaults('description', '26 indicators covering awareness, timeliness, inclusion, SEA/SH, and satisfaction.')
-        ->name('categories.grm');
-
-    Route::get('/gender-social-inclusion', SectionPage::class)
-        ->defaults('title', 'Gender & Social Inclusion')
-        ->defaults('group', 'Indicator Categories')
-        ->defaults('description', '28 indicators covering women\'s participation, disability inclusion, and empowerment.')
-        ->name('categories.gsi');
-});
+Route::get('/categories/{slug}', CategoryPage::class)->name('categories.show');
+Route::get('/indicators/{code}', IndicatorDetail::class)->name('indicators.show');
 
 Route::get('/impact-indicators', SectionPage::class)
     ->defaults('title', 'Impact Indicators')
@@ -78,6 +52,8 @@ Route::get('/reports', SectionPage::class)
 
 Route::prefix('admin')->group(function () {
     Route::get('/users', UsersManager::class)->name('admin.users');
+
+    Route::get('/categories', CategoriesManager::class)->name('admin.categories');
 
     Route::get('/master-data', MasterDataManager::class)->name('admin.master-data');
 

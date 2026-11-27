@@ -32,3 +32,33 @@
 ### Deferred
 - Confirming which specific states are Model 1 vs Model 2 (Decision D-3).
 - Quarterly access review PDF/CSV export (will be wired with Phase 7 reporting).
+
+---
+
+## Phase 2: Indicator Registry & Categories
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Registry Schema & Models:** `indicator_categories`, `indicator_subgroups`, `indicators`, and `indicator_targets` (`IndicatorCategory`, `IndicatorSubgroup`, `Indicator`, `IndicatorTarget`).
+- **Catalogue Importer:** `App\Services\IndicatorCatalogueImporter` and `php artisan spin:import-catalogue` loading all 115 lines (24 RF, 11 CF, 26 BCC, 26 GM, 28 GS), linking parent/child disaggregated lines (`IR-2.4-F`, `IR-2.4-Y`, `IR-3.3-Y`), linking shared indicators (`IR-2.3`, `BC-12`, `GS-02`), and outputting a validation report of known source defects.
+- **Dynamic Menu & Category Pages:** Side menu generated from `indicator_categories`; `CategoryPage` (`/categories/{slug}`) with summary tiles, sub-group tabs, indicator table, and `No target` status handling.
+- **Admin Screen:** `CategoriesManager` (`/admin/categories`) to create, order, and retire categories and sub-groups.
+
+### Deferred
+- Populating baselines and annual targets for the 91 non-PAD indicators (pending Decision D-9).
+
+---
+
+## Phase 3: Manual Data Entry & Approval Workflow
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Data Entry & Registers:** `indicator_values` and `register_entries` tables/models (`IndicatorValue`, `RegisterEntry`) with `BelongsToOwner` and `Auditable`.
+- **Approval Workflow:** `ApprovalWorkflowService` (`submit`, `verify`, `approve`, `requestReopen`, `syncOffline`) enforcing separation of duties and locking approved records.
+- **Offline Sync:** `POST /api/v1/offline-sync` (`OfflineSyncController`) with `client_generated_id` deduplication and `409` rejection on locked/approved records, plus `public/js/offline-sync.js` (IndexedDB queue).
+- **Status Engine & UI:** Updated `Indicator::statusLabel()` for `yes_no` and polarity-aware bands; added `IndicatorDetail` (`/indicators/{code}`).
+
+### Deferred
+- Automated email/in-app reminder escalation jobs (pending Decision D-13 on service-level days).
