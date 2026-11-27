@@ -5,6 +5,7 @@ use App\Livewire\Admin\CategoriesManager;
 use App\Livewire\Admin\MasterDataManager;
 use App\Livewire\Admin\UsersManager;
 use App\Livewire\CategoryPage;
+use App\Livewire\FileUploadManager;
 use App\Livewire\IndicatorDetail;
 use App\Livewire\SectionPage;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ Route::get('/', SectionPage::class)
 
 Route::get('/categories/{slug}', CategoryPage::class)->name('categories.show');
 Route::get('/indicators/{code}', IndicatorDetail::class)->name('indicators.show');
+Route::get('/uploads', FileUploadManager::class)->name('uploads.index');
 
 Route::get('/impact-indicators', SectionPage::class)
     ->defaults('title', 'Impact Indicators')
