@@ -5,12 +5,14 @@
             <h1 class="text-2xl font-bold text-slate-900 mt-1">SPIN MEIS 2.0 Dashboard</h1>
         </div>
         <div class="flex items-center gap-2">
-            <select wire:model.live="year" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white">
+            <label for="dashboard-year" class="sr-only">Reporting Year</label>
+            <select id="dashboard-year" wire:model.live="year" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600">
                 @foreach([2025, 2026, 2027, 2028, 2029] as $y)
                     <option value="{{ $y }}">{{ $y }}</option>
                 @endforeach
             </select>
-            <select wire:model.live="quarter" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white">
+            <label for="dashboard-quarter" class="sr-only">Reporting Quarter</label>
+            <select id="dashboard-quarter" wire:model.live="quarter" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600">
                 <option value="">All Quarters</option>
                 <option value="1">Q1</option>
                 <option value="2">Q2</option>
