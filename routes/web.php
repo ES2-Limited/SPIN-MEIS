@@ -1,5 +1,8 @@
 <?php
 
+use App\Livewire\Admin\AuditLogViewer;
+use App\Livewire\Admin\MasterDataManager;
+use App\Livewire\Admin\UsersManager;
 use App\Livewire\SectionPage;
 use Illuminate\Support\Facades\Route;
 
@@ -74,11 +77,11 @@ Route::get('/reports', SectionPage::class)
     ->name('reports');
 
 Route::prefix('admin')->group(function () {
-    Route::get('/users', SectionPage::class)
-        ->defaults('title', 'Users & Roles')
-        ->defaults('group', 'Administration')
-        ->defaults('description', 'User accounts, owner-scoped roles, and access reviews.')
-        ->name('admin.users');
+    Route::get('/users', UsersManager::class)->name('admin.users');
+
+    Route::get('/master-data', MasterDataManager::class)->name('admin.master-data');
+
+    Route::get('/audit-log', AuditLogViewer::class)->name('admin.audit-log');
 
     Route::get('/integrations', SectionPage::class)
         ->defaults('title', 'Integrations')

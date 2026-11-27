@@ -15,5 +15,20 @@
 - Hosting provider selection and OpenID Connect (OIDC) identity provider configuration (Decision D-2).
 - Playwright browser smoke suite (will be added once authentication and interactive forms are built in Phase 1/3).
 
-### Open questions
-- Confirm hosting provider and OIDC identity option (D-2) before staging/production deployment.
+---
+
+## Phase 1: Identity, Ownership, Access Control & Audit
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Auth & Roles:** Installed `laravel/fortify` (TOTP 2FA support), `spatie/laravel-permission`, and `bacon/bacon-qr-code`. Seeded all 11 permissions and 9 PRD roles in `Database\Seeders\RolesAndPermissionsSeeder`.
+- **User Scope & Lifecycle:** Added `owner_type` (`national`, `rbda`, `state`), `owner_id`, `status` (`invited`, `active`, `disabled`), and lifecycle timestamps to `users`.
+- **Master Data:** Created `states`, `rbdas`, `river_basins`, and `schemes` tables/models; `Scheme` auto-computes `owner_type`/`owner_id` from `delivery_model` (`model_1` → RBDA, `model_2` → State).
+- **Central Scope & Policy Layer:** `OwnerScope` + `BelongsToOwner` trait filter all queries by owner; `OwnerScopedPolicy` enforces read-only World Bank access and separation of duties (`submitted_by !== verifier`).
+- **Audit Log:** `audit_logs` table, `AuditLogger`, `Auditable` trait, and auth/role event listeners in `AppServiceProvider` logging `auth.login`, `role.assigned`, `role.removed`, and model CRUD.
+- **Admin Screens:** Livewire `UsersManager`, `MasterDataManager`, and `AuditLogViewer` at `/admin/users`, `/admin/master-data`, `/admin/audit-log`.
+
+### Deferred
+- Confirming which specific states are Model 1 vs Model 2 (Decision D-3).
+- Quarterly access review PDF/CSV export (will be wired with Phase 7 reporting).
