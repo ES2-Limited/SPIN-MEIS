@@ -1,24 +1,27 @@
 <div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <div class="text-xs font-semibold uppercase tracking-wider text-teal-700">Overview</div>
-            <h1 class="text-2xl font-bold text-slate-900 mt-1">SPIN MEIS 2.0 Dashboard</h1>
-        </div>
-        <div class="flex items-center gap-2">
-            <label for="dashboard-year" class="sr-only">Reporting Year</label>
-            <select id="dashboard-year" wire:model.live="year" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600">
-                @foreach([2025, 2026, 2027, 2028, 2029] as $y)
-                    <option value="{{ $y }}">{{ $y }}</option>
-                @endforeach
-            </select>
-            <label for="dashboard-quarter" class="sr-only">Reporting Quarter</label>
-            <select id="dashboard-quarter" wire:model.live="quarter" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600">
-                <option value="">All Quarters</option>
-                <option value="1">Q1</option>
-                <option value="2">Q2</option>
-                <option value="3">Q3</option>
-                <option value="4">Q4</option>
-            </select>
+    <div class="rounded-2xl p-6 text-white bg-gradient-to-r from-amber-950 via-amber-900 to-slate-900 border border-amber-800 shadow-md">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/25 border border-amber-300/40 text-amber-200">◎ M&amp;E Framework</span>
+                <h1 class="text-2xl font-bold tracking-tight mt-2">Monitoring &amp; Evaluation Dashboard</h1>
+                <p class="text-xs text-amber-100/90 mt-1 max-w-2xl">Track Results Framework, Communication, Behaviour Change, GRM, and Gender indicators across all participating states and river basins.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <label for="dashboard-year" class="sr-only">Reporting Year</label>
+                <select id="dashboard-year" wire:model.live="year" class="border border-white/20 rounded-lg px-3 py-1.5 text-sm bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    @foreach([2025, 2026, 2027, 2028, 2029] as $y)
+                        <option value="{{ $y }}" class="text-slate-900">{{ $y }}</option>
+                    @endforeach
+                </select>
+                <label for="dashboard-quarter" class="sr-only">Reporting Quarter</label>
+                <select id="dashboard-quarter" wire:model.live="quarter" class="border border-white/20 rounded-lg px-3 py-1.5 text-sm bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <option value="" class="text-slate-900">All Quarters</option>
+                    <option value="1" class="text-slate-900">Q1</option>
+                    <option value="2" class="text-slate-900">Q2</option>
+                    <option value="3" class="text-slate-900">Q3</option>
+                    <option value="4" class="text-slate-900">Q4</option>
+                </select>
+            </div>
         </div>
     </div>
 
