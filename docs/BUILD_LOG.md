@@ -83,3 +83,14 @@
 ### What was built
 - **DashboardService:** Computes owner-scoped headline tiles, category scorecard (`on_track`, `needs_attention`, `off_track`, `no_target`, `no_data`), and pending approvals count.
 - **Dashboard UI:** `Dashboard` Livewire component (`/`) with year/quarter filters, headline tiles, and clickable category scorecard.
+
+---
+
+## Phase 6: Project Data Modules
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Schema & Models:** `procurement_packages`, `awpb_activities`, and `impact_indicators` (`ProcurementPackage`, `AwpbActivity`, `ImpactIndicator`).
+- **River Basin Register:** `RiverBasinRegister` (`/project-data/river-basin`) with State, Model 1, Model 2, and Scheme views respecting `BelongsToOwner` scope.
+- **STEP Import:** `StepImportService` matching on `package_reference` and reporting mismatched references.
