@@ -5,16 +5,13 @@ use App\Livewire\Admin\CategoriesManager;
 use App\Livewire\Admin\MasterDataManager;
 use App\Livewire\Admin\UsersManager;
 use App\Livewire\CategoryPage;
+use App\Livewire\Dashboard;
 use App\Livewire\FileUploadManager;
 use App\Livewire\IndicatorDetail;
 use App\Livewire\SectionPage;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', SectionPage::class)
-    ->defaults('title', 'Dashboard')
-    ->defaults('group', 'Overview')
-    ->defaults('description', 'Category scorecard and items needing attention.')
-    ->name('dashboard');
+Route::get('/', Dashboard::class)->name('dashboard');
 
 Route::get('/categories/{slug}', CategoryPage::class)->name('categories.show');
 Route::get('/indicators/{code}', IndicatorDetail::class)->name('indicators.show');
