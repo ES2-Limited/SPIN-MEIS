@@ -62,3 +62,24 @@
 
 ### Deferred
 - Automated email/in-app reminder escalation jobs (pending Decision D-13 on service-level days).
+
+---
+
+## Phase 4: File Upload
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **Upload Schema & Model:** `upload_imports` table and `UploadImport` model (`BelongsToOwner`, `Auditable`).
+- **Spreadsheet Import Service:** `SpreadsheetImportService` (`generateTemplate`, `validateAndPreview`, `commit`) validating types, ranges, owner scope, and duplicates before committing `Draft` `IndicatorValue` records with `channel = 'upload'`.
+- **UI:** `FileUploadManager` (`/uploads`) for import history.
+
+---
+
+## Phase 5: Dashboard & Category Pages
+**Status:** Completed  
+**Date:** 2026-11-27
+
+### What was built
+- **DashboardService:** Computes owner-scoped headline tiles, category scorecard (`on_track`, `needs_attention`, `off_track`, `no_target`, `no_data`), and pending approvals count.
+- **Dashboard UI:** `Dashboard` Livewire component (`/`) with year/quarter filters, headline tiles, and clickable category scorecard.
