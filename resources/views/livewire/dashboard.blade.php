@@ -53,6 +53,76 @@
         </div>
     </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {{-- Category Status SVG Bar Chart --}}
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900">Indicator Status by Category</h2>
+                    <p class="text-xs text-slate-500">On track (teal) vs Attention / Off track (amber)</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px] text-slate-600">
+                    <span class="inline-flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm bg-teal-600 inline-block"></i>On track</span>
+                    <span class="inline-flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></i>Attention/Off</span>
+                </div>
+            </div>
+            @php
+                $maxCat = max(1, collect($scorecard)->max('total') ?? 1);
+            @endphp
+            <div class="space-y-3">
+                @foreach($scorecard as $row)
+                    @php
+                        $onW = round(($row['on_track'] / $maxCat) * 100);
+                        $warnW = round((($row['needs_attention'] + $row['off_track']) / $maxCat) * 100);
+                    @endphp
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-700 truncate">{{ $row['name'] }}</span>
+                            <span class="text-slate-500 tabular-nums">{{ $row['on_track'] }} / {{ $row['total'] }}</span>
+                        </div>
+                        <div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden flex">
+                            @if($onW > 0)
+                                <div class="bg-teal-600 h-full transition-all" style="width: {{ $onW }}%"></div>
+                            @endif
+                            @if($warnW > 0)
+                                <div class="bg-amber-500 h-full transition-all" style="width: {{ $warnW }}%"></div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Overall Portfolio Health Donut / Summary --}}
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900">Portfolio Health ({{ $year }})</h2>
+                <p class="text-xs text-slate-500">Distribution across all {{ $headline['total_indicators'] }} indicators</p>
+            </div>
+            @php
+                $tot = max(1, $headline['total_indicators']);
+                $bars = [
+                    ['label' => 'On Track', 'count' => $headline['on_track'], 'color' => 'bg-teal-600'],
+                    ['label' => 'Needs Attention', 'count' => $headline['needs_attention'], 'color' => 'bg-amber-500'],
+                    ['label' => 'Off Track', 'count' => $headline['off_track'], 'color' => 'bg-rose-600'],
+                    ['label' => 'No Target', 'count' => $headline['no_target'], 'color' => 'bg-slate-400'],
+                    ['label' => 'No Data', 'count' => $headline['no_data'], 'color' => 'bg-slate-200'],
+                ];
+            @endphp
+            <div class="space-y-2.5 my-4">
+                @foreach($bars as $b)
+                    <div class="grid grid-cols-12 items-center gap-2 text-xs">
+                        <span class="col-span-4 text-slate-600 font-medium">{{ $b['label'] }}</span>
+                        <div class="col-span-6 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="{{ $b['color'] }} h-full rounded-full" style="width: {{ round(($b['count'] / $tot) * 100) }}%"></div>
+                        </div>
+                        <span class="col-span-2 text-right font-semibold text-slate-800 tabular-nums">{{ $b['count'] }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-x-auto">
         <div class="px-5 py-4 border-b border-slate-200 font-semibold text-slate-900">Category Scorecard</div>
         <table class="min-w-full divide-y divide-slate-200 text-sm">
