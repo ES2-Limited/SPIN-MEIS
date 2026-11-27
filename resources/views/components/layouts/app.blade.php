@@ -10,66 +10,78 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col md:flex-row">
+<body class="bg-[#f4f7f9] text-slate-800 antialiased min-h-screen flex flex-col md:flex-row">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-amber-400 focus:text-slate-950 focus:font-semibold focus:shadow-lg">
         Skip to main content
     </a>
 
-    {{-- Desktop Sidebar --}}
-    <aside aria-label="Sidebar" class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-teal-900 text-teal-50 border-r border-teal-800">
-        <div class="flex items-center gap-3 px-4 py-4 border-b border-teal-800">
-            <img src="/icons/icon-192.svg" alt="SPIN MEIS 2.0 logo" class="w-8 h-8 rounded-lg">
+    {{-- Desktop Sidebar (Prototype Light Shell) --}}
+    <aside aria-label="Sidebar" class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-white/90 backdrop-blur border-r border-slate-200 text-slate-700">
+        <div class="flex items-center gap-3 px-4 py-4 border-b border-slate-100">
+            <div class="w-9 h-9 rounded-xl bg-teal-700 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">ME</div>
             <div>
-                <div class="font-bold text-sm tracking-wide text-white">SPIN MEIS 2.0</div>
-                <div class="text-[11px] text-amber-300 font-medium">FMWR&amp;S · Nigeria</div>
+                <div class="font-bold text-sm tracking-tight text-slate-900">SPIN MEIS 2.0</div>
+                <div class="text-[11px] text-slate-500 font-medium">FMWR&amp;S · P179684</div>
             </div>
         </div>
 
         <nav aria-label="Primary" class="flex-1 overflow-y-auto px-3 py-4 space-y-5 text-sm">
             <div>
-                <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Overview</div>
-                <a href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif class="flex items-center gap-2 px-2.5 py-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ request()->routeIs('dashboard') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">
+                <div class="px-2 mb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Overview</div>
+                <a href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif class="flex items-center gap-2 px-2.5 py-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 {{ request()->routeIs('dashboard') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">
                     <span>Dashboard</span>
                 </a>
             </div>
 
             <div>
-                <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Indicator Categories</div>
+                <div class="px-2 mb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Indicator Categories</div>
                 <div class="space-y-0.5">
                     @php
                         $navCategories = \Illuminate\Support\Facades\Schema::hasTable('indicator_categories')
-                            ? \App\Models\IndicatorCategory::where('is_active', true)->orderBy('sort_order')->get()
+                            ? \App\Models\IndicatorCategory::where('is_active', true)->with(['subgroups' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')])->orderBy('sort_order')->get()
                             : collect();
                     @endphp
                     @forelse($navCategories as $navCat)
-                        <a href="{{ url('/categories/' . $navCat->slug) }}" class="block px-2.5 py-1.5 rounded-md {{ request()->is('categories/' . $navCat->slug) ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">{{ $navCat->name }}</a>
+                        @php $catOpen = request()->is('categories/' . $navCat->slug); @endphp
+                        <div x-data="{ open: {{ $catOpen ? 'true' : 'false' }} }">
+                            <button type="button" @click="open = !open" aria-expanded="{{ $catOpen ? 'true' : 'false' }}" :aria-expanded="open.toString()" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 {{ $catOpen ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">
+                                <span class="truncate">{{ $navCat->name }}</span>
+                                <svg class="w-3.5 h-3.5 shrink-0 transition-transform" :class="open ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+                            </button>
+                            <div x-show="open" x-cloak class="ml-4 mt-0.5 space-y-0.5 border-l border-slate-200 pl-2.5 text-xs">
+                                <a href="{{ url('/categories/' . $navCat->slug) }}" class="block py-1 text-slate-600 hover:text-teal-700">All Indicators</a>
+                                @foreach($navCat->subgroups as $sg)
+                                    <a href="{{ url('/categories/' . $navCat->slug . '?subgroup=' . $sg->id) }}" class="block py-1 text-slate-500 hover:text-teal-700 truncate">{{ $sg->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
                     @empty
-                        <a href="{{ url('/categories/results-framework') }}" class="block px-2.5 py-1.5 rounded-md hover:bg-teal-800/60 text-teal-100">Results Framework (PAD)</a>
+                        <a href="{{ url('/categories/results-framework') }}" class="block px-2.5 py-1.5 rounded-lg hover:bg-slate-100 text-slate-600">Results Framework (PAD)</a>
                     @endforelse
-                    <a href="{{ route('impact-indicators') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('impact-indicators') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Impact Indicators</a>
+                    <a href="{{ route('impact-indicators') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('impact-indicators') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Impact Indicators</a>
                 </div>
             </div>
 
             <div>
-                <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Project Data</div>
+                <div class="px-2 mb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Project Data</div>
                 <div class="space-y-0.5">
-                    <a href="{{ route('project-data.river-basin') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('project-data.river-basin') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">River Basin</a>
-                    <a href="{{ route('project-data.procurement') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('project-data.procurement') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Procurement</a>
-                    <a href="{{ route('project-data.awpb') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('project-data.awpb') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Annual Work Plan &amp; Budget</a>
+                    <a href="{{ route('project-data.river-basin') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('project-data.river-basin') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">River Basin</a>
+                    <a href="{{ route('project-data.procurement') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('project-data.procurement') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Procurement</a>
+                    <a href="{{ route('project-data.awpb') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('project-data.awpb') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Annual Work Plan &amp; Budget</a>
                 </div>
             </div>
 
             <div>
-                <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Reporting</div>
-                <a href="{{ route('reports') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('reports') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Reports</a>
+                <div class="px-2 mb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Reporting</div>
+                <a href="{{ route('reports') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('reports') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Reports</a>
             </div>
 
             <div>
-                <div class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-teal-300">Administration</div>
+                <div class="px-2 mb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Administration</div>
                 <div class="space-y-0.5">
-                    <a href="{{ route('admin.users') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('admin.users') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Users &amp; Roles</a>
-                    <a href="{{ route('admin.integrations') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('admin.integrations') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Integrations</a>
-                    <a href="{{ route('admin.data-backup') }}" class="block px-2.5 py-1.5 rounded-md {{ request()->routeIs('admin.data-backup') ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">Data &amp; Backup</a>
+                    <a href="{{ route('admin.users') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('admin.users') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Users &amp; Roles</a>
+                    <a href="{{ route('admin.integrations') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('admin.integrations') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Integrations</a>
+                    <a href="{{ route('admin.data-backup') }}" class="block px-2.5 py-1.5 rounded-lg {{ request()->routeIs('admin.data-backup') ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700' : 'hover:bg-slate-100 text-slate-600' }}">Data &amp; Backup</a>
                 </div>
             </div>
         </nav>
