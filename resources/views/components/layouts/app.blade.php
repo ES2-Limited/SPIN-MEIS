@@ -38,11 +38,23 @@
                 <div class="space-y-0.5">
                     @php
                         $navCategories = \Illuminate\Support\Facades\Schema::hasTable('indicator_categories')
-                            ? \App\Models\IndicatorCategory::where('is_active', true)->orderBy('sort_order')->get()
+                            ? \App\Models\IndicatorCategory::where('is_active', true)->with(['subgroups' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')])->orderBy('sort_order')->get()
                             : collect();
                     @endphp
                     @forelse($navCategories as $navCat)
-                        <a href="{{ url('/categories/' . $navCat->slug) }}" class="block px-2.5 py-1.5 rounded-md {{ request()->is('categories/' . $navCat->slug) ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">{{ $navCat->name }}</a>
+                        @php $catOpen = request()->is('categories/' . $navCat->slug); @endphp
+                        <div x-data="{ open: {{ $catOpen ? 'true' : 'false' }} }">
+                            <button type="button" @click="open = !open" aria-expanded="{{ $catOpen ? 'true' : 'false' }}" :aria-expanded="open.toString()" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 {{ $catOpen ? 'bg-teal-800 text-amber-300 font-semibold' : 'hover:bg-teal-800/60 text-teal-100' }}">
+                                <span class="truncate">{{ $navCat->name }}</span>
+                                <svg class="w-3.5 h-3.5 shrink-0 transition-transform" :class="open ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+                            </button>
+                            <div x-show="open" x-cloak class="ml-4 mt-0.5 space-y-0.5 border-l border-teal-700/70 pl-2.5 text-xs">
+                                <a href="{{ url('/categories/' . $navCat->slug) }}" class="block py-1 text-teal-200 hover:text-amber-300">All Indicators</a>
+                                @foreach($navCat->subgroups as $sg)
+                                    <a href="{{ url('/categories/' . $navCat->slug . '?subgroup=' . $sg->id) }}" class="block py-1 text-teal-200 hover:text-amber-300 truncate">{{ $sg->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
                     @empty
                         <a href="{{ url('/categories/results-framework') }}" class="block px-2.5 py-1.5 rounded-md hover:bg-teal-800/60 text-teal-100">Results Framework (PAD)</a>
                     @endforelse
