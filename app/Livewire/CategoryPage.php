@@ -4,13 +4,18 @@ namespace App\Livewire;
 
 use App\Models\IndicatorCategory;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class CategoryPage extends Component
 {
     public IndicatorCategory $category;
 
+    #[Url(as: 'subgroup')]
     public ?int $activeSubgroupId = null;
+
+    #[Url]
+    public string $tab = 'indicators';
 
     public function mount(string $slug): void
     {
@@ -21,7 +26,13 @@ class CategoryPage extends Component
 
     public function selectSubgroup(?int $subgroupId): void
     {
+        $this->tab = 'indicators';
         $this->activeSubgroupId = $subgroupId;
+    }
+
+    public function selectTab(string $tab): void
+    {
+        $this->tab = $tab;
     }
 
     public function render(): View
