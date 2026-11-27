@@ -53,6 +53,14 @@
                                 @foreach($navCat->subgroups as $sg)
                                     <a href="{{ url('/categories/' . $navCat->slug . '?subgroup=' . $sg->id) }}" class="block py-1 text-slate-500 hover:text-teal-700 truncate">{{ $sg->name }}</a>
                                 @endforeach
+                                @if($navCat->slug === 'communication-framework')
+                                    <a href="{{ url('/categories/' . $navCat->slug . '?tab=log') }}" class="block py-1 text-teal-700 font-medium hover:underline">Activity log</a>
+                                @elseif($navCat->slug === 'grievance-mechanism-kpis')
+                                    <a href="{{ url('/categories/' . $navCat->slug . '?tab=cases') }}" class="block py-1 text-teal-700 font-medium hover:underline">Case statistics</a>
+                                @elseif($navCat->slug === 'gender-social-inclusion')
+                                    <a href="{{ url('/categories/' . $navCat->slug . '?tab=register') }}" class="block py-1 text-teal-700 font-medium hover:underline">Activity register</a>
+                                @endif
+                                <a href="{{ url('/categories/' . $navCat->slug . '?tab=entry') }}" class="block py-1 text-amber-700 font-medium hover:underline">Quarterly data entry</a>
                             </div>
                         </div>
                     @empty
