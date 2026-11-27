@@ -8,6 +8,7 @@ use App\Livewire\CategoryPage;
 use App\Livewire\Dashboard;
 use App\Livewire\FileUploadManager;
 use App\Livewire\IndicatorDetail;
+use App\Livewire\RiverBasinRegister;
 use App\Livewire\SectionPage;
 use Illuminate\Support\Facades\Route;
 
@@ -24,11 +25,7 @@ Route::get('/impact-indicators', SectionPage::class)
     ->name('impact-indicators');
 
 Route::prefix('project-data')->group(function () {
-    Route::get('/river-basin', SectionPage::class)
-        ->defaults('title', 'River Basin')
-        ->defaults('group', 'Project Data')
-        ->defaults('description', 'Scheme register by State, Model 1 (RBDA), Model 2 (State), and Scheme name.')
-        ->name('project-data.river-basin');
+    Route::get('/river-basin', RiverBasinRegister::class)->name('project-data.river-basin');
 
     Route::get('/procurement', SectionPage::class)
         ->defaults('title', 'Procurement')
