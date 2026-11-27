@@ -1,9 +1,9 @@
 <div class="space-y-6">
-    <div>
-        <div class="text-xs font-semibold uppercase tracking-wider text-teal-700">Indicator Category</div>
-        <h1 class="text-2xl font-bold text-slate-900 mt-1">{{ $category->name }}</h1>
+    <div class="rounded-2xl p-6 text-white bg-gradient-to-r from-teal-950 via-teal-800 to-slate-900 border border-teal-800 shadow-md">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/25 border border-teal-300/40 text-teal-200">◎ Indicator Category</span>
+        <h1 class="text-2xl font-bold tracking-tight mt-2">{{ $category->name }}</h1>
         @if($category->description)
-            <p class="text-sm text-slate-600 mt-1">{{ $category->description }}</p>
+            <p class="text-xs text-teal-100/90 mt-1 max-w-2xl">{{ $category->description }}</p>
         @endif
     </div>
 
