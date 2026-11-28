@@ -83,7 +83,7 @@
                         <td class="px-4 py-3 text-xs">{{ $ind->data_mode }}</td>
                         <td class="px-4 py-3 text-xs">{{ $ind->source_system ?? '—' }}</td>
                         <td class="px-4 py-3 text-xs">
-                            <a href="{{ route('indicators.show', $ind->code) }}" class="inline-flex items-center px-2.5 py-1 rounded-md bg-teal-700 hover:bg-teal-800 text-white font-semibold">Enter</a>
+                            <button type="button" wire:click="openEntryModal({{ $ind->id }})" class="inline-flex items-center px-2.5 py-1 rounded-md bg-teal-700 hover:bg-teal-800 text-white font-semibold">Enter</button>
                         </td>
                     </tr>
                 @empty
@@ -94,4 +94,52 @@
             </tbody>
         </table>
     </div>
+
+    @if($entryIndicatorId)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="entry-modal-title">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-mono font-semibold text-teal-700">{{ $entryIndicatorCode }}</div>
+                        <h2 id="entry-modal-title" class="text-base font-bold text-slate-900">Enter Quarterly Value</h2>
+                    </div>
+                    <button type="button" wire:click="closeEntryModal" class="text-slate-400 hover:text-slate-600 text-xl leading-none" aria-label="Close">&times;</button>
+                </div>
+                <form wire:submit="saveEntry" class="p-5 space-y-4">
+                    <p class="text-xs text-slate-600">{{ $entryIndicatorName }}</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="modal-year" class="block text-xs font-semibold text-slate-600 mb-1">Year</label>
+                            <select id="modal-year" wire:model="entryYear" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                                @foreach([2025, 2026, 2027, 2028, 2029] as $y)
+                                    <option value="{{ $y }}">{{ $y }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label for="modal-quarter" class="block text-xs font-semibold text-slate-600 mb-1">Quarter</label>
+                            <select id="modal-quarter" wire:model="entryQuarter" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                                <option value="1">Q1</option>
+                                <option value="2">Q2</option>
+                                <option value="3">Q3</option>
+                                <option value="4">Q4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="modal-value" class="block text-xs font-semibold text-slate-600 mb-1">Value</label>
+                        <input id="modal-value" wire:model="entryValue" type="number" step="any" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label for="modal-comment" class="block text-xs font-semibold text-slate-600 mb-1">Notes / Evidence</label>
+                        <input id="modal-comment" wire:model="entryComment" type="text" placeholder="Optional note" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" wire:click="closeEntryModal" class="px-4 py-2 rounded-lg border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
+                        <button type="submit" class="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold">Save Draft</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
 </div>
