@@ -148,11 +148,11 @@ class IndicatorCatalogueImporter
             ['code' => 'IR-3.1', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Hydropower feasibility studies completed', 'unit' => 'Number', 'target_2025' => 2],
             ['code' => 'IR-3.2', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Private sector PPP transactions structured', 'unit' => 'Number', 'target_2025' => 1],
             ['code' => 'IR-3.3', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Jobs created in irrigated agriculture and water services', 'unit' => 'Number', 'target_2025' => 8000],
+            ['code' => 'IR-3.3-F', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'People benefiting from climate-resilient infrastructure — Female', 'unit' => 'Number', 'parent' => 'IR-3.3', 'target_2025' => 3200],
             ['code' => 'IR-3.3-Y', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Jobs created in irrigated agriculture and water services — Youth', 'unit' => 'Number', 'parent' => 'IR-3.3', 'target_2025' => 3200, 'notes' => 'Retained PAD line missing from 2 Nov 2026 list'],
             ['code' => 'IR-3.4', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Institutional capacity building trainings delivered', 'unit' => 'Number', 'target_2025' => 24],
             ['code' => 'IR-4.1', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Grievances resolved within 30 days', 'unit' => 'Percentage', 'target_2025' => 85, 'notes' => 'Retained PAD line missing from 2 Nov 2026 list; aligned to 30 days'],
             ['code' => 'IR-4.2', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'Quarterly M&E reports submitted on time', 'unit' => 'Number', 'target_2025' => 4],
-            ['code' => 'IR-4.3', 'level' => 'IR', 'sg' => $irSubgroup->id, 'name' => 'SEA/SH referral pathways operational across project states', 'unit' => 'Percentage', 'target_2025' => 100],
         ];
 
         foreach ($rfLines as $idx => $line) {

@@ -7,6 +7,9 @@
                 <p class="text-xs text-amber-100/90 mt-1 max-w-2xl">Track Results Framework, Communication, Behaviour Change, GRM, and Gender indicators across all participating states and river basins.</p>
                 <div class="mt-4 flex flex-wrap gap-2">
                     <a href="{{ url('/categories/results-framework') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Results Framework</a>
+                    <a href="{{ url('/categories/communication-framework') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Communications</a>
+                    <a href="{{ url('/categories/grievance-mechanism-kpis') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">GRM</a>
+                    <a href="{{ url('/categories/gender-social-inclusion') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">GBV / Gender</a>
                     <a href="{{ route('uploads.index') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Bulk Upload</a>
                     <a href="{{ route('reports') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/30 text-white transition">Reports</a>
                 </div>
