@@ -52,6 +52,7 @@
                     <th class="px-4 py-3">Status</th>
                     <th class="px-4 py-3">Mode</th>
                     <th class="px-4 py-3">Source</th>
+                    <th class="px-4 py-3">Action</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
@@ -81,6 +82,9 @@
                         </td>
                         <td class="px-4 py-3 text-xs">{{ $ind->data_mode }}</td>
                         <td class="px-4 py-3 text-xs">{{ $ind->source_system ?? '—' }}</td>
+                        <td class="px-4 py-3 text-xs">
+                            <a href="{{ route('indicators.show', $ind->code) }}" class="inline-flex items-center px-2.5 py-1 rounded-md bg-teal-700 hover:bg-teal-800 text-white font-semibold">Enter</a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
