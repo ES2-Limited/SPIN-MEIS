@@ -61,9 +61,11 @@
                         $status = $ind->statusLabel(null);
                     @endphp
                     <tr>
-                        <td class="px-4 py-3 font-mono text-xs font-semibold text-teal-800">{{ $ind->code }}</td>
+                        <td class="px-4 py-3 font-mono text-xs font-semibold text-teal-800">
+                            <a href="{{ route('indicators.show', $ind->code) }}" class="hover:underline">{{ $ind->code }}</a>
+                        </td>
                         <td class="px-4 py-3 text-slate-900">
-                            {{ $ind->name }}
+                            <a href="{{ route('indicators.show', $ind->code) }}" class="hover:text-teal-700 font-medium">{{ $ind->name }}</a>
                             @if($ind->shared_group_key)
                                 <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded bg-teal-100 text-teal-800 font-semibold">Shared</span>
                             @endif
