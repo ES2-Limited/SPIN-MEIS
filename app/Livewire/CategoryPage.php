@@ -28,9 +28,13 @@ class CategoryPage extends Component
 
     public int $entryYear = 2025;
 
-    public int $entryQuarter = 1;
+    public string $q1 = '';
 
-    public string $entryValue = '';
+    public string $q2 = '';
+
+    public string $q3 = '';
+
+    public string $q4 = '';
 
     public string $entryComment = '';
 
@@ -58,8 +62,29 @@ class CategoryPage extends Component
         $this->entryIndicatorId = $ind->id;
         $this->entryIndicatorCode = $ind->code;
         $this->entryIndicatorName = $ind->name;
-        $this->entryValue = '';
-        $this->entryComment = '';
+        $this->loadQuarterValues();
+    }
+
+    public function updatedEntryYear(): void
+    {
+        $this->loadQuarterValues();
+    }
+
+    protected function loadQuarterValues(): void
+    {
+        if (! $this->entryIndicatorId) {
+            return;
+        }
+        $existing = IndicatorValue::where('indicator_id', $this->entryIndicatorId)
+            ->where('year', $this->entryYear)
+            ->get()
+            ->keyBy('quarter');
+
+        $this->q1 = (string) ($existing->get(1)?->value ?? '');
+        $this->q2 = (string) ($existing->get(2)?->value ?? '');
+        $this->q3 = (string) ($existing->get(3)?->value ?? '');
+        $this->q4 = (string) ($existing->get(4)?->value ?? '');
+        $this->entryComment = (string) ($existing->first()?->comment ?? '');
     }
 
     public function closeEntryModal(): void
@@ -72,28 +97,38 @@ class CategoryPage extends Component
         $this->validate([
             'entryIndicatorId' => ['required', 'exists:indicators,id'],
             'entryYear' => ['required', 'integer', 'min:2025', 'max:2035'],
-            'entryQuarter' => ['required', 'integer', 'min:1', 'max:4'],
-            'entryValue' => ['required', 'numeric'],
+            'q1' => ['nullable', 'numeric'],
+            'q2' => ['nullable', 'numeric'],
+            'q3' => ['nullable', 'numeric'],
+            'q4' => ['nullable', 'numeric'],
             'entryComment' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $user = Auth::user();
-
-        IndicatorValue::create([
-            'indicator_id' => $this->entryIndicatorId,
-            'owner_type' => $user?->owner_type ?? 'national',
-            'owner_id' => $user?->owner_id,
-            'year' => $this->entryYear,
-            'quarter' => $this->entryQuarter,
-            'value' => (float) $this->entryValue,
-            'comment' => $this->entryComment ?: null,
-            'channel' => 'manual',
-            'source' => 'manual_entry',
-            'status' => 'draft',
-        ]);
+        foreach ([1 => $this->q1, 2 => $this->q2, 3 => $this->q3, 4 => $this->q4] as $q => $val) {
+            if ($val === '' || $val === null) {
+                continue;
+            }
+            IndicatorValue::updateOrCreate(
+                [
+                    'indicator_id' => $this->entryIndicatorId,
+                    'owner_type' => $user?->owner_type ?? 'national',
+                    'owner_id' => $user?->owner_id,
+                    'year' => $this->entryYear,
+                    'quarter' => $q,
+                ],
+                [
+                    'value' => (float) $val,
+                    'comment' => $this->entryComment ?: null,
+                    'channel' => 'manual',
+                    'source' => 'manual_entry',
+                    'status' => 'draft',
+                ]
+            );
+        }
 
         $this->entryIndicatorId = null;
-        session()->flash('status', "Saved Draft for {$this->entryIndicatorCode}.");
+        session()->flash('status', "Saved {$this->entryYear} quarterly data for {$this->entryIndicatorCode}.");
     }
 
     public function render(): View

@@ -107,31 +107,34 @@
                 </div>
                 <form wire:submit="saveEntry" class="p-5 space-y-4">
                     <p class="text-xs text-slate-600">{{ $entryIndicatorName }}</p>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="modal-year" class="block text-xs font-semibold text-slate-600 mb-1">Year</label>
+                        <select id="modal-year" wire:model.live="entryYear" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                            @foreach([2025, 2026, 2027, 2028, 2029] as $y)
+                                <option value="{{ $y }}">{{ $y }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2">
                         <div>
-                            <label for="modal-year" class="block text-xs font-semibold text-slate-600 mb-1">Year</label>
-                            <select id="modal-year" wire:model="entryYear" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                                @foreach([2025, 2026, 2027, 2028, 2029] as $y)
-                                    <option value="{{ $y }}">{{ $y }}</option>
-                                @endforeach
-                            </select>
+                            <label for="modal-q1" class="block text-xs font-semibold text-slate-600 mb-1">Q1</label>
+                            <input id="modal-q1" wire:model="q1" type="number" step="any" class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-sm text-right">
                         </div>
                         <div>
-                            <label for="modal-quarter" class="block text-xs font-semibold text-slate-600 mb-1">Quarter</label>
-                            <select id="modal-quarter" wire:model="entryQuarter" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                                <option value="1">Q1</option>
-                                <option value="2">Q2</option>
-                                <option value="3">Q3</option>
-                                <option value="4">Q4</option>
-                            </select>
+                            <label for="modal-q2" class="block text-xs font-semibold text-slate-600 mb-1">Q2</label>
+                            <input id="modal-q2" wire:model="q2" type="number" step="any" class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-sm text-right">
+                        </div>
+                        <div>
+                            <label for="modal-q3" class="block text-xs font-semibold text-slate-600 mb-1">Q3</label>
+                            <input id="modal-q3" wire:model="q3" type="number" step="any" class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-sm text-right">
+                        </div>
+                        <div>
+                            <label for="modal-q4" class="block text-xs font-semibold text-slate-600 mb-1">Q4</label>
+                            <input id="modal-q4" wire:model="q4" type="number" step="any" class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-sm text-right">
                         </div>
                     </div>
                     <div>
-                        <label for="modal-value" class="block text-xs font-semibold text-slate-600 mb-1">Value</label>
-                        <input id="modal-value" wire:model="entryValue" type="number" step="any" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label for="modal-comment" class="block text-xs font-semibold text-slate-600 mb-1">Notes / Evidence</label>
+                        <label for="modal-comment" class="block text-xs font-semibold text-slate-600 mb-1">Means of verification / notes</label>
                         <input id="modal-comment" wire:model="entryComment" type="text" placeholder="Optional note" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
                     </div>
                     <div class="flex justify-end gap-2 pt-2">
